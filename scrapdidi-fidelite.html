@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scrap Didi — Programme Fidélité</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #f2a7c3;
+    --rose-light: #fde8f2;
+    --rose-deep: #e07aaa;
+    --blush: #fdf0f6;
+    --cream: #fdf8f4;
+    --mint: #b8e8d8;
+    --mint-light: #e8f9f4;
+    --gold: #f5c84a;
+    --gold-light: #fef6d8;
+    --text: #3a2a35;
+    --text-soft: #7a5a6e;
+    --white: #ffffff;
+    --shadow: 0 8px 40px rgba(242,167,195,0.22);
+    --shadow-strong: 0 16px 60px rgba(242,167,195,0.35);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--blush);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ---- HERO ---- */
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #fde8f2 0%, #fdf0f6 40%, #e8f9f4 100%);
+    overflow: hidden;
+    padding: 80px 24px 60px;
+  }
+
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: float 6s ease-in-out infinite;
+  }
+  .bubble-1 { width: 320px; height: 320px; background: radial-gradient(circle, #f9c8de, #f2a7c3); top: -80px; left: -80px; animation-delay: 0s; }
+  .bubble-2 { width: 200px; height: 200px; background: radial-gradient(circle, #b8e8d8, #8dd5c2); bottom: -40px; right: 10%; animation-delay: 1.5s; }
+  .bubble-3 { width: 120px; height: 120px; background: radial-gradient(circle, #f5c84a, #f0b830); top: 15%; right: 5%; animation-delay: 3s; }
+  .bubble-4 { width: 80px; height: 80px; background: radial-gradient(circle, #fde8f2, #f9c8de); bottom: 20%; left: 8%; animation-delay: 2s; }
+  .bubble-5 { width: 50px; height: 50px; background: radial-gradient(circle, #f2a7c3, #e07aaa); top: 35%; left: 15%; animation-delay: 4s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-18px) scale(1.03); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 680px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--white);
+    border: 2px solid var(--rose);
+    border-radius: 30px;
+    padding: 8px 22px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--rose-deep);
+    letter-spacing: 0.08em;
+    margin-bottom: 28px;
+    box-shadow: 0 4px 16px rgba(242,167,195,0.2);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--rose-deep);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text-soft);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 500px;
+    margin: 0 auto 40px;
+  }
+
+  /* Loyalty card */
+  .loyalty-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+    background: var(--white);
+    border-radius: 24px;
+    padding: 24px 36px;
+    box-shadow: var(--shadow-strong);
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .loyalty-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: linear-gradient(180deg, var(--rose), var(--rose-deep));
+  }
+  .lc-left { text-align: left; }
+  .lc-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--text);
+    font-weight: 700;
+  }
+  .lc-label {
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .lc-points {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--rose-deep);
+    line-height: 1;
+  }
+  .lc-points span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--text-soft);
+    display: block;
+    margin-top: 2px;
+  }
+  .lc-dots {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    max-width: 100px;
+  }
+  .lc-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--rose-light);
+    border: 2px solid var(--rose);
+    transition: all 0.3s;
+  }
+  .lc-dot.filled { background: var(--rose); }
+
+  /* Simulation */
+  .sim-banner {
+    margin-top: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--gold-light);
+    border: 1.5px dashed var(--gold);
+    border-radius: 16px;
+    padding: 14px 26px;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+  .sim-banner strong { color: #c49a00; }
+
+  /* ---- SECTION WRAPPER ---- */
+  section { padding: 80px 24px; }
+  .container { max-width: 960px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--rose-deep);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+    margin-bottom: 48px;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  /* ---- STEPS ---- */
+  .steps-section { background: var(--white); }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 52px;
+    left: 18%;
+    width: 64%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--rose-light), var(--rose), var(--rose-light));
+    z-index: 0;
+  }
+  .step-card {
+    text-align: center;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .step-bubble {
+    width: 104px; height: 104px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 2rem;
+    position: relative;
+    box-shadow: var(--shadow);
+  }
+  .step-bubble-1 { background: linear-gradient(135deg, #fde8f2, #f9c8de); }
+  .step-bubble-2 { background: linear-gradient(135deg, #e8f9f4, #b8e8d8); }
+  .step-bubble-3 { background: linear-gradient(135deg, #fef6d8, #f5c84a); }
+  .step-num {
+    position: absolute;
+    top: -4px; right: -4px;
+    width: 26px; height: 26px;
+    background: var(--white);
+    border: 2px solid var(--rose);
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--rose-deep);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .step-text {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    line-height: 1.6;
+  }
+  .step-highlight {
+    display: inline-block;
+    background: var(--rose-light);
+    color: var(--rose-deep);
+    border-radius: 8px;
+    padding: 3px 10px;
+    font-weight: 500;
+    margin-top: 6px;
+    font-size: 0.88rem;
+  }
+
+  /* ---- ZOOM POINTS ---- */
+  .zoom-section { background: var(--blush); }
+  .zoom-card {
+    background: var(--white);
+    border-radius: 28px;
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    box-shadow: var(--shadow);
+  }
+  .zoom-text p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-soft);
+    margin-bottom: 20px;
+  }
+  .zoom-text strong { color: var(--text); }
+  .points-visual {
+    background: var(--rose-light);
+    border-radius: 20px;
+    padding: 32px;
+    text-align: center;
+  }
+  .counter-wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+  .counter-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--rose-deep);
+    animation: countUp 2s ease-out forwards;
+  }
+  .counter-unit {
+    font-size: 1rem;
+    color: var(--text-soft);
+    font-weight: 300;
+  }
+  @keyframes countUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .confettis {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .conf {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    animation: pop 0.4s ease both;
+  }
+  .conf:nth-child(odd) { border-radius: 2px; transform: rotate(45deg); }
+  @keyframes pop {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* ---- REWARD ---- */
+  .reward-section {
+    background: linear-gradient(135deg, #3a2a35 0%, #5a3a4e 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .reward-section::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(242,167,195,0.2), transparent 70%);
+  }
+  .reward-section .section-label { color: var(--rose-light); }
+  .reward-section .section-title { color: var(--white); }
+  .reward-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .reward-text p {
+    color: rgba(255,255,255,0.75);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+  .reward-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(242,167,195,0.2);
+    border: 1.5px solid var(--rose);
+    border-radius: 30px;
+    padding: 10px 22px;
+    color: var(--rose-light);
+    font-size: 0.95rem;
+    margin-top: 8px;
+  }
+  .gift-tag {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .gift-tag::before {
+    content: '';
+    position: absolute;
+    top: 12px; left: 12px; right: 12px; bottom: 12px;
+    border: 2px dashed var(--rose);
+    border-radius: 12px;
+    pointer-events: none;
+  }
+  .gift-icon { font-size: 3.5rem; display: block; margin-bottom: 12px; }
+  .gift-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    color: var(--rose-deep);
+    font-weight: 700;
+    display: block;
+  }
+  .gift-desc {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    margin-top: 4px;
+  }
+  .gift-badge {
+    position: absolute;
+    top: -14px; right: 24px;
+    background: var(--gold);
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ---- CONDITIONS ---- */
+  .cond-section { background: var(--cream); }
+  .cond-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .cond-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 28px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    box-shadow: 0 4px 20px rgba(242,167,195,0.1);
+    border: 1.5px solid var(--rose-light);
+  }
+  .cond-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: var(--rose-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .cond-body h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+  .cond-body p { font-size: 0.88rem; color: var(--text-soft); line-height: 1.5; }
+
+  /* ---- HOW TO USE ---- */
+  .how-section { background: var(--blush); }
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .tl-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    position: relative;
+  }
+  .tl-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .tl-num {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid var(--rose);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--rose-deep);
+    box-shadow: 0 4px 16px rgba(242,167,195,0.2);
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  .tl-line {
+    width: 2px;
+    flex: 1;
+    min-height: 28px;
+    background: linear-gradient(180deg, var(--rose), var(--rose-light));
+    margin: 0 auto;
+  }
+  .tl-item:last-child .tl-line { display: none; }
+  .tl-content {
+    padding: 8px 0 28px;
+    flex: 1;
+  }
+  .tl-content h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .tl-content p { font-size: 0.88rem; color: var(--text-soft); }
+
+  /* ---- CTA ---- */
+  .cta-section {
+    background: linear-gradient(135deg, #fde8f2 0%, #e8f9f4 100%);
+    text-align: center;
+    padding: 100px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section .container { position: relative; z-index: 2; }
+  .cta-blob {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.35;
+  }
+  .cta-blob-1 { width: 500px; height: 500px; background: var(--rose-light); top: -200px; left: -100px; }
+  .cta-blob-2 { width: 300px; height: 300px; background: var(--mint); bottom: -100px; right: -50px; }
+
+  .cta-pre {
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--rose-deep);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    line-height: 1.3;
+    color: var(--text);
+    max-width: 600px;
+    margin: 0 auto 40px;
+  }
+  .cta-title em { font-style: italic; color: var(--rose-deep); }
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+    color: var(--white);
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 8px 30px rgba(242,167,195,0.5);
+    transition: all 0.25s ease;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(242,167,195,0.6); }
+  .btn-secondary {
+    display: inline-block;
+    background: var(--white);
+    color: var(--rose-deep);
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1.5px solid var(--rose);
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+  .btn-secondary:hover { background: var(--rose-light); transform: translateY(-3px); }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 700px) {
+    .steps-grid, .zoom-card, .reward-grid, .cond-grid {
+      grid-template-columns: 1fr;
+    }
+    .steps-grid::before { display: none; }
+    .loyalty-card { flex-direction: column; padding: 24px; }
+    .cta-title { font-size: 1.6rem; }
+  }
+
+  /* Decorative scissors */
+  .scissors-divider {
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--rose);
+    opacity: 0.5;
+    margin: 4px 0;
+    letter-spacing: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── HERO ─────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="bubble bubble-1"></div>
+  <div class="bubble bubble-2"></div>
+  <div class="bubble bubble-3"></div>
+  <div class="bubble bubble-4"></div>
+  <div class="bubble bubble-5"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">✂️ Scrap Didi Points Fidélité</div>
+    <h1>💗 Votre fidélité<br><em>récompensée,</em> tout simplement</h1>
+    <p class="hero-sub">Cumulez des points à chaque commande… et transformez-les en petits bonheurs ✨</p>
+
+    <div class="loyalty-card">
+      <div class="lc-left">
+        <div class="lc-brand">Scrap Didi</div>
+        <div class="lc-label">Carte fidélité</div>
+      </div>
+      <div>
+        <div class="lc-points">247 <span>points cumulés</span></div>
+      </div>
+      <div class="lc-dots">
+        <div class="lc-dot filled"></div><div class="lc-dot filled"></div><div class="lc-dot filled"></div>
+        <div class="lc-dot filled"></div><div class="lc-dot filled"></div><div class="lc-dot filled"></div>
+        <div class="lc-dot filled"></div><div class="lc-dot filled"></div><div class="lc-dot"></div>
+        <div class="lc-dot"></div>
+      </div>
+    </div>
+
+    <div style="display:block">
+      <div class="sim-banner">
+        💡 <span>Avec une commande de <strong>50€</strong>, vous gagnez <strong>150 points</strong> — soit 1,50€ de récompense 🎁</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ÉTAPES ─────────────────────────────────────────────────────── -->
+<section class="steps-section">
+  <div class="container">
+    <div class="section-label">Comment ça marche</div>
+    <div class="section-title">Le principe en 3 étapes 🌸</div>
+    <div class="steps-grid">
+
+      <div class="step-card">
+        <div class="step-bubble step-bubble-1">
+          🛍️
+          <div class="step-num">1</div>
+        </div>
+        <div class="step-title">Vous commandez</div>
+        <p class="step-text">Chaque euro compte&nbsp;!</p>
+        <span class="step-highlight">1€ dépensé = 3 points</span>
+      </div>
+
+      <div class="step-card">
+        <div class="step-bubble step-bubble-2">
+          ✨
+          <div class="step-num">2</div>
+        </div>
+        <div class="step-title">Vous cumulez</div>
+        <p class="step-text">Votre cagnotte grandit commande après commande</p>
+        <span class="step-highlight">À partir de 300 points</span>
+      </div>
+
+      <div class="step-card">
+        <div class="step-bubble step-bubble-3">
+          🎁
+          <div class="step-num">3</div>
+        </div>
+        <div class="step-title">Vous vous faites plaisir</div>
+        <p class="step-text">Transformez vos points en bon d'achat</p>
+        <span class="step-highlight">Bon à utiliser en boutique</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── ZOOM POINTS ─────────────────────────────────────────────────────── -->
+<section class="zoom-section">
+  <div class="container">
+    <div class="zoom-card">
+      <div class="zoom-text">
+        <div class="section-label">Comprendre vos points</div>
+        <div class="section-title" style="margin-bottom:20px">Votre cagnotte,<br><em>ça fonctionne comment ?</em></div>
+        <p>Pour chaque euro dépensé, vous cumulez <strong>3 Scrap Didi Points</strong>. Plus vous vous faites plaisir, plus votre cagnotte grandit 💗</p>
+        <p>C'est automatique, immédiat, et vous pouvez suivre vos points directement dans votre espace client.</p>
+      </div>
+      <div class="points-visual">
+        <div style="font-size:0.82rem;color:var(--text-soft);margin-bottom:8px;letter-spacing:0.1em;text-transform:uppercase">Vos points</div>
+        <div class="counter-wrap">
+          <span class="counter-num" id="counter">0</span>
+          <span class="counter-unit">&nbsp;pts</span>
+        </div>
+        <div style="font-size:0.82rem;color:var(--text-soft);margin-bottom:16px">encore 53 pts avant la récompense 🎉</div>
+        <div class="confettis" id="confettis"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── REWARD ─────────────────────────────────────────────────────── -->
+<section class="reward-section">
+  <div class="container">
+    <div class="reward-grid">
+      <div class="reward-text">
+        <div class="section-label">La récompense</div>
+        <div class="section-title">✨ Transformez vos points<br>en récompense</div>
+        <p>Dès 300 points, convertissez-les en bon d'achat à utiliser sur votre prochaine commande.</p>
+        <p>Concrètement : 300 points = 3€ de remise. Simple, direct, délicieux.</p>
+        <div class="reward-pill">💗 Votre fidélité a de la valeur ici</div>
+      </div>
+      <div>
+        <div class="gift-tag">
+          <div class="gift-badge">🌟 RÉCOMPENSE</div>
+          <span class="gift-icon">🎟️</span>
+          <span class="gift-amount">-3€</span>
+          <div class="gift-desc">Bon d'achat Scrap Didi</div>
+          <div style="margin-top:16px;font-size:0.78rem;color:var(--text-soft);letter-spacing:0.06em">CODE : SDIDI-XXXX-XXXX</div>
+          <div class="scissors-divider" style="margin-top:16px">✂ - - - - - - - -</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONDITIONS ─────────────────────────────────────────────────────── -->
+<section class="cond-section">
+  <div class="container">
+    <div class="section-label">Conditions</div>
+    <div class="section-title">Simple, transparent, sans surprises 🤍</div>
+    <div class="cond-grid">
+
+      <div class="cond-card">
+        <div class="cond-icon">⏱️</div>
+        <div class="cond-body">
+          <h4>Bon valable 2 mois</h4>
+          <p>Une fois converti, votre bon d'achat est valable 2 mois à compter de l'émission.</p>
+        </div>
+      </div>
+
+      <div class="cond-card">
+        <div class="cond-icon">📩</div>
+        <div class="cond-body">
+          <h4>Code par email</h4>
+          <p>Votre code vous est envoyé automatiquement par email dès la conversion effectuée.</p>
+        </div>
+      </div>
+
+      <div class="cond-card">
+        <div class="cond-icon">🛒</div>
+        <div class="cond-body">
+          <h4>Comme un code promo</h4>
+          <p>Utilisez-le comme n'importe quel code de réduction dans votre panier.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW TO ─────────────────────────────────────────────────────── -->
+<section class="how-section">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Mode d'emploi</div>
+    <div class="section-title">Comment utiliser mes points ? 👤</div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-num">1</div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <h4>Rendez-vous dans votre espace client</h4>
+          <p>Connectez-vous à votre compte Scrap Didi</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-num">2</div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <h4>Rubrique « Scrap Didi Points Fidélité »</h4>
+          <p>Retrouvez votre solde de points et l'historique</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-num">3</div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <h4>Convertissez vos points</h4>
+          <p>Un clic suffit dès 300 points atteints</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-num">4</div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <h4>Recevez votre code par email</h4>
+          <p>Votre bon d'achat arrive immédiatement dans votre boîte</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left">
+          <div class="tl-num">5</div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <h4>Utilisez-le dans votre panier 🎉</h4>
+          <p>Saisissez le code à la validation de commande et profitez !</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─────────────────────────────────────────────────────── -->
+<section class="cta-section">
+  <div class="cta-blob cta-blob-1"></div>
+  <div class="cta-blob cta-blob-2"></div>
+  <div class="container">
+    <div class="cta-pre">Prête à commencer ?</div>
+    <div class="cta-title">💗 Et si votre prochaine commande vous rapportait <em>déjà des points ?</em></div>
+    <div class="cta-buttons">
+      <a href="#" class="btn-primary">💗 Accéder à mon compte</a>
+      <a href="#" class="btn-secondary">✨ Découvrir la boutique</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Counter animation
+  const target = 247;
+  const el = document.getElementById('counter');
+  let current = 0;
+  const step = Math.ceil(target / 60);
+  const interval = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current;
+    if (current >= target) clearInterval(interval);
+  }, 25);
+
+  // Confettis
+  const colors = ['#f2a7c3','#b8e8d8','#f5c84a','#fde8f2','#e07aaa','#8dd5c2'];
+  const c = document.getElementById('confettis');
+  for (let i = 0; i < 18; i++) {
+    const d = document.createElement('div');
+    d.className = 'conf';
+    d.style.cssText = `background:${colors[i%colors.length]};animation-delay:${i*0.06}s;width:${8+Math.random()*10}px;height:${8+Math.random()*10}px`;
+    c.appendChild(d);
+  }
+</script>
+</body>
+</html>
